@@ -11,9 +11,11 @@ MerkelMain::MerkelMain()
 void MerkelMain::init()
 {
     int input;
+    std::string current_time = orderbook.getEarliestTime();
     while(true)
     {
         printMenu();
+        std::cout << "Current Time: " << current_time << std::endl;
         input = getUserOption();
         processUserOption(input);
     }
