@@ -1,6 +1,7 @@
 #include "OrderBook.h"
 #include <map>
 
+#include <iostream>
 
 OrderBook::OrderBook(std::string filename) 
 {
@@ -39,4 +40,45 @@ std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string
     }
 
     return orders_sub;
+}
+
+double OrderBook::getHighPrice(std::vector<OrderBookEntry>& orders)
+{    
+    if( orders.size() == 0)
+    {
+        return 0;
+    }
+
+    double max = orders[0].price;
+
+    for(OrderBookEntry& e : orders)
+    {
+        if ( e.price > max)
+        {
+            max = e.price;
+        }
+    }
+
+    return max;
+}
+
+
+double OrderBook::getLowPrice(std::vector<OrderBookEntry>& orders)
+{
+    if( orders.size() == 0)
+    {
+        return 0;
+    }
+
+    double low = orders[0].price;
+
+    for(OrderBookEntry& e : orders)
+    {
+        if ( e.price < low)
+        {
+            low = e.price;
+        }
+    }
+
+    return low;
 }
