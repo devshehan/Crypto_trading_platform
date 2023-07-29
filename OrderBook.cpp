@@ -1,5 +1,6 @@
 #include "OrderBook.h"
 #include <map>
+#include <algorithm>
 
 #include <iostream>
 
@@ -87,4 +88,80 @@ double OrderBook::getLowPrice(std::vector<OrderBookEntry>& orders)
 std::string OrderBook::getEarliestTime()
 {
     return orders[0].timestamp ;
+}
+
+std::string OrderBook::getNextTime(std::string timestamp)
+{
+    std::string next_timestamp = "";
+
+    for(OrderBookEntry& e : orders)
+    {
+        if (e.timestamp > timestamp)
+        {
+            next_timestamp = e.timestamp;
+            break;
+        }
+    }
+
+    if (next_timestamp == "")
+    {
+        next_timestamp = orders[0].timestamp;
+    }
+
+    return next_timestamp;
+}
+
+
+void OrderBook::insertOrder(OrderBookEntry& order)
+{
+    orders.push_back(order);
+    std::sort(orders.begin(),orders.end(), OrderBookEntry::compareByTimeStamp);
+}
+
+std::vector<OrderBookEntry> OrderBook::matchAskToBids(std::string product , std::string timestamp)
+{
+    std::vector<OrderBookEntry> asks = getOrders(OrderBookType::ask,product,timestamp);
+    std::vector<OrderBookEntry> bids = getOrders(OrderBookType::bid,product,timestamp);
+
+    std::vector<OrderBookEntry> sales;
+
+    /** sorting*/
+    std::sort(asks.begin(),asks.end(),OrderBookEntry::compareByPriceAsc);
+    std::sort(bids.begin(),bids.end(),OrderBookEntry::compareByPriceDesc);
+
+    for(OrderBookEntry& ask : asks)
+    {
+        for(OrderBookEntry& bid : bids)
+        {
+            if ( bid.price >= ask.price)
+            {
+                OrderBookEntry sale{ask.price,0,timestamp,product,OrderBookType::sale};
+                
+                if( bid.amount == ask.amount)
+                {
+                    sale.amount = ask.amount;
+                    sales.push_back(sale);
+                    bid.amount = 0;
+                    break;
+                }
+
+                if ( bid.amount > ask.amount)
+                {
+                    sale.amount = ask.amount;
+                    sales.push_back(sale);
+                    bid.amount = bid.amount - ask.amount;
+                    break;   
+                }
+
+                if ( bid.amount < ask.amount)
+                {
+                    sale.amount = bid.amount;
+                    sales.push_back(sale);
+                    ask.amount = ask.amount - bid.amount;
+                    continue;
+                }
+            } 
+        }
+    }
+    return sales;
 }
