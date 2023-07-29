@@ -11,6 +11,7 @@ class OrderBook
         OrderBook(std::string fileName);
         std::vector<std::string> getKnownProducts();
         std::vector<OrderBookEntry> getOrders(OrderBookType type, std::string product, std::string timestamp);
+        void insertOrder(OrderBookEntry& order);
 
         /* return the earliest time in the order book*/
         std::string getEarliestTime();
