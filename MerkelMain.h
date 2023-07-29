@@ -2,6 +2,7 @@
 #include <vector>
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
+#include "Wallet.h"
 
 class MerkelMain
 {
@@ -21,4 +22,6 @@ class MerkelMain
 
         std::string current_time;
         OrderBook orderbook{"2000.csv"};
+
+        Wallet wallet;
 };
