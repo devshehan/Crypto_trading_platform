@@ -14,7 +14,7 @@ void CoreMain::init()
     int input;
     current_time = orderbook.getEarliestTime();
 
-    wallet.insertCurrency("USDT",4000);
+    wallet.insertCurrency("BTC",400);
 
     while(true)
     {
