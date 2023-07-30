@@ -15,6 +15,9 @@ class Wallet
         bool canFullfillOrder(OrderBookEntry order);
         std::string toString();
 
+        // udate the wallet
+        void processSale(OrderBookEntry& sale);
+
     private:
         std::map<std::string,double> currencies;  
 };
