@@ -135,8 +135,19 @@ std::vector<OrderBookEntry> OrderBook::matchAskToBids(std::string product , std:
         {
             if ( bid.price >= ask.price)
             {
-                OrderBookEntry sale{ask.price,0,timestamp,product,OrderBookType::sale};
-                
+                OrderBookEntry sale{ask.price,0,timestamp,product,OrderBookType::asksale};
+
+                if(bid.userName == "simUser")
+                {
+                    sale.userName = "simUser";
+                    sale.orderType = OrderBookType::bidsale;
+                }
+                if(ask.userName == "simUser")
+                {
+                    sale.userName = "simUser";
+                    sale.orderType = OrderBookType::asksale;
+                }
+
                 if( bid.amount == ask.amount)
                 {
                     sale.amount = ask.amount;

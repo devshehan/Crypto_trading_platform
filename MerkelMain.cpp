@@ -94,6 +94,7 @@ void MerkelMain::enterAsk()
         try
         {
             OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],current_time,tokens[0],OrderBookType::ask);
+            obe.userName = "simUser";
             if(wallet.canFullfillOrder(obe))
             {
                 std::cout << "Wallet can complete this order." << std::endl;
@@ -132,6 +133,7 @@ void MerkelMain::enterBid()
         try
         {
             OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],current_time,tokens[0],OrderBookType::bid);
+            obe.userName = "simUser";
             if(wallet.canFullfillOrder(obe))
             {
                 std::cout << "Wallet can complete this order." << std::endl;
