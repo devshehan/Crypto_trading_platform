@@ -164,7 +164,7 @@ std::vector<OrderBookEntry> OrderBook::matchAskToBids(std::string product , std:
                     break;   
                 }
 
-                if ( bid.amount < ask.amount)
+                if ( bid.amount < ask.amount && bid.amount > 0)
                 {
                     sale.amount = bid.amount;
                     sales.push_back(sale);
