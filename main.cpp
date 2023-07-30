@@ -1,10 +1,10 @@
-#include "MerkelMain.h"
+#include "CoreMain.h"
 #include "CSVReader.h"
 #include "Wallet.h"
 
 int main()
 {
-    MerkelMain app{};
+    CoreMain app{};
     app.init(); 
 
     // Wallet wallet;
