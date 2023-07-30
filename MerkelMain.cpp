@@ -14,7 +14,7 @@ void MerkelMain::init()
     int input;
     current_time = orderbook.getEarliestTime();
 
-    wallet.insertCurrency("BTC",10);
+    wallet.insertCurrency("BTC",100);
 
     while(true)
     {
@@ -87,14 +87,21 @@ void MerkelMain::enterAsk()
 
     if(tokens.size() != 3)
     {
-        std::cout << "Bad input" << input << std::endl;
+        std::cout << "MerkelMain::enterAsk Bad input" << input << std::endl;
     }
     else
     {
         try
         {
             OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],current_time,tokens[0],OrderBookType::ask);
-            orderbook.insertOrder(obe);
+            if(wallet.canFullfillOrder(obe))
+            {
+                std::cout << "Wallet can complete this order." << std::endl;
+                orderbook.insertOrder(obe);
+            }
+            else{
+                std::cout << "Wallet has not insufficient balance." << std::endl;
+            }
         }
         catch(const std::exception& e)
         {
@@ -108,12 +115,42 @@ void MerkelMain::enterAsk()
 
 void MerkelMain::enterBid()
 {
-    std::cout << "Make a bid - enter the amount" << std::endl;
+    std::cout << "Mark and bid - enter the amount : product, price, amount, eg ETH/BTC,200,0.5" << std::endl;
+    std::string input;
+
+    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(std::cin, input);
+
+    std::vector<std::string> tokens = CSVReader::tokenise(input,',');
+
+    if(tokens.size() != 3)
+    {
+        std::cout << "MerkelMain::enterAsk Bad input" << input << std::endl;
+    }
+    else
+    {
+        try
+        {
+            OrderBookEntry obe = CSVReader::stringsToOBE(tokens[1],tokens[2],current_time,tokens[0],OrderBookType::bid);
+            if(wallet.canFullfillOrder(obe))
+            {
+                std::cout << "Wallet can complete this order." << std::endl;
+                orderbook.insertOrder(obe);
+            }
+            else{
+                std::cout << "Wallet has not insufficient balance." << std::endl;
+            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cout << "MerkelMain::enterBid  Bad Line" << std::endl; 
+        }
+    }
+    std::cout << "You typed : " << input << std::endl;
 }
 
 void MerkelMain::printWallet()
 {
-    std::cout << "Your wallet is empty." << std::endl; 
     std::cout << wallet.toString() << std::endl;
 }
 
