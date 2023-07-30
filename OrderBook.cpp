@@ -169,6 +169,7 @@ std::vector<OrderBookEntry> OrderBook::matchAskToBids(std::string product , std:
                     sale.amount = bid.amount;
                     sales.push_back(sale);
                     ask.amount = ask.amount - bid.amount;
+                    bid.amount = 0;
                     continue;
                 }
             } 
