@@ -1,4 +1,4 @@
-#pragma once
+#pragma once    //Restrict same file import multiple times
 #include <vector>
 #include "OrderBookEntry.h"
 #include "OrderBook.h"
